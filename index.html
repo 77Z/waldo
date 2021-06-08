@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>WALDO</title>
+		<style>
+			body {
+				background-position: center;
+				background-size: cover;
+				background-repeat: no-repeat;
+
+				height: 100%;
+			}
+
+			html {
+				height: 100%;
+			}
+
+			.bg {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+			}
+
+			.spotlight {
+				width: 200px;
+				height: 200px;
+				border-radius: 1000000px;
+				border: 10000px solid black;
+				position: fixed;
+				top: calc(-200px - 10000px);
+				left: calc(-40px - 10000px);
+			}
+
+			.hints {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				margin: 0;
+				text-align: center;
+				color: white;
+				font-family: sans-serif;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="spotlight" id="s"></div>
+
+		<h1 class="hints" id="hint">Pick a spot</h1>
+	</body>
+
+	<script>
+		var trackX = 0;
+		var trackY = 0;
+		var tries = 3;
+
+		function randomNumber(min, max) {
+			return Math.random() * (max - min) + min;
+		}
+
+		function shuffleSystem() {
+			var waldos = ["image.png", "lol.png", "lo.png"];
+			for (var i = 0; i < waldos.length; i++) {
+				document.body.style.background =
+					"url(" + waldos[Math.round(randomNumber(0, waldos.length - 1))] + ")";
+			}
+		}
+
+		shuffleSystem();
+
+		document.addEventListener("mousemove", function (e) {
+			trackX = e.clientX;
+			trackY = e.clientY;
+		});
+
+		document.addEventListener("click", function () {
+			document.getElementById("s").style.left = trackX - 100 - 10000 + "px";
+
+			document.getElementById("s").style.top = trackY - 100 - 10000 + "px";
+
+			tries--;
+			//use proper grammar
+			if (tries === 1) {
+				document.getElementById("hint").innerText =
+					"Wrong, " + tries + " try left";
+			} else {
+				document.getElementById("hint").innerText =
+					"Wrong, " + tries + " tries left";
+			}
+
+			if (tries < 1) {
+				document.getElementById("hint").innerHTML =
+					"You failed! Congrats you're blind!<br>Resetting Soon...";
+				setTimeout(function () {
+					location.reload();
+				}, 2000);
+			}
+		});
+	</script>
+</html>
